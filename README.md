@@ -1,15 +1,9 @@
-Baik! Saya buatkan **README PREMIUM** + **gambar ilustrasi (berbentuk banner dan diagram weton)**
-⚡ *Siap pakai untuk GitHub – tampilan modern, elegan, dan profesional.*
 
----
-
-# 🌙✨ **README PREMIUM – Aplikasi Perhitungan Weton Jawa**
+# 🌙✨ **Website Perhitungan Weton Jawa**
 
 <p align="center">
   <img src="https://i.ibb.co/6rN6F2w/weton-banner.png" width="680"/>
 </p>
-
-> 📌 *Banner di atas saya buatkan khusus — jika ingin versi lain (gold, dark mode, batik, ukiran Jawa), bilang saja.*
 
 ---
 
