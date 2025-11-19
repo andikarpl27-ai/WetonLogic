@@ -1,5 +1,3 @@
-
-
 // ---------------- CONFIG ----------------
 const PASARAN = ["Legi","Pahing","Pon","Wage","Kliwon"];
 const PASARAN_NEPTU = { Legi:5, Pahing:9, Pon:7, Wage:4, Kliwon:8 };
@@ -16,7 +14,7 @@ function getPasaran(date){ return PASARAN[ pasaranIndex(date) ]; }
 function getHari(date){ let d=(typeof date==='string')?new Date(date):date; return HARI[d.getDay()]; }
 function getWeton(date){ let hari=getHari(date); let pas=getPasaran(date); return { hari, pasaran:pas, neptuHari:HARI_NEPTU[hari], neptuPasaran:PASARAN_NEPTU[pas], totalNeptu:HARI_NEPTU[hari]+PASARAN_NEPTU[pas] }; }
 
-// ---------------- Audio Player ----------------
+// ---------------- Audio Player (built-in 5 gending) ----------------
 const audioEl = document.getElementById('audio');
 const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
@@ -25,61 +23,58 @@ const seek = document.getElementById('seek');
 const curTime = document.getElementById('curTime');
 const durTime = document.getElementById('durTime');
 const playlistEl = document.getElementById('playlist');
-const audioUpload = document.getElementById('audioUpload');
-const clearPlaylist = document.getElementById('clearPlaylist');
 
-let playlist = []; // {title, src}
+let defaultTracks = [
+  { title: 'IrengIreng', src: 'gending-jawa/IrengIreng.mp3' },
+  { title: 'kedanan', src: 'gending-jawa/kedanan.mp3' },
+  { title: 'KecikKecik', src: 'gending-jawa/KecikKecik.mp3' },
+  { title: 'ngamen4', src: 'gending-jawa/ngamen4.mp3' },
+  { title: 'PendekarRakyat', src: 'gending-jawa/PendekarRakyat.mp3' }
+];
+
 let current = 0;
 let playing = false;
 
-async function loadAssetsAudio(){
-  try{
-    const res = await fetch('assets/audio/manifest.json');
-    if(!res.ok) return;
-    const files = await res.json();
-    files.forEach(f=> addTrack({title:f.title || f.file, src:'assets/audio/'+f.file}));
-  }catch(e){ /* manifest not present - ignore */ }
-}
-
-function addTrack(track){ playlist.push(track); renderPlaylist(); if(playlist.length===1) loadTrack(0); }
-
-function renderPlaylist(){ playlistEl.innerHTML=''; playlist.forEach((t,i)=>{
-  const row = document.createElement('div'); row.className='pls-item'; row.innerHTML = `<span class="pls-title">${escapeHtml(t.title)}</span><button class="pls-play" data-i="${i}" title="Play"><i class="fas fa-play"></i></button>`;
-  playlistEl.appendChild(row);
-});
+function renderPlaylist(){
+  playlistEl.innerHTML = '';
+  defaultTracks.forEach((t,i)=>{
+    const row = document.createElement('div');
+    row.className = 'pls-item';
+    row.innerHTML = `<span class="pls-title">${escapeHtml(t.title)}</span><button class="pls-play" data-i="${i}" title="Play"><i class="fas fa-play"></i></button>`;
+    playlistEl.appendChild(row);
+  });
   playlistEl.querySelectorAll('.pls-play').forEach(b=> b.addEventListener('click', ()=> loadTrack(Number(b.dataset.i))));
 }
 
-function loadTrack(i){ if(i<0 || i>=playlist.length) return; current = i; audioEl.src = playlist[i].src; audioEl.load(); audioEl.play().then(()=>{playing=true; updatePlayBtn();}).catch(()=>{}); highlightCurrent(); }
+function loadTrack(i){
+  if(i<0 || i>=defaultTracks.length) return;
+  current = i;
+  audioEl.src = defaultTracks[i].src;
+  audioEl.load();
+  audioEl.play().then(()=>{ playing=true; updatePlayBtn(); }).catch(()=>{});
+  highlightCurrent();
+}
 
-function highlightCurrent(){ const items = playlistEl.querySelectorAll('.pls-item'); items.forEach((it,idx)=>{ it.style.opacity = idx===current? '1' : '0.66'; }); }
+function highlightCurrent(){
+  const items = playlistEl.querySelectorAll('.pls-item');
+  items.forEach((it,idx)=>{ it.style.opacity = idx===current? '1' : '0.66'; });
+}
 
 function updatePlayBtn(){ playBtn.innerHTML = playing? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>'; }
 
 playBtn.addEventListener('click', ()=>{
-  if(!audioEl.src) return alert('Playlist kosong. Upload audio atau buat assets/audio/manifest.json');
+  if(!audioEl.src){ loadTrack(0); return; }
   if(playing){ audioEl.pause(); playing=false; } else { audioEl.play(); playing=true; }
   updatePlayBtn();
 });
-prevBtn.addEventListener('click', ()=>{ if(playlist.length===0) return; loadTrack((current-1+playlist.length)%playlist.length); });
-nextBtn.addEventListener('click', ()=>{ if(playlist.length===0) return; loadTrack((current+1)%playlist.length); });
+prevBtn.addEventListener('click', ()=>{ loadTrack((current-1+defaultTracks.length)%defaultTracks.length); });
+nextBtn.addEventListener('click', ()=>{ loadTrack((current+1)%defaultTracks.length); });
 
 audioEl.addEventListener('timeupdate', ()=>{
   seek.max = audioEl.duration || 0; seek.value = audioEl.currentTime || 0; curTime.textContent = formatTime(audioEl.currentTime||0); durTime.textContent = formatTime(audioEl.duration||0);
 });
 seek.addEventListener('input', ()=>{ audioEl.currentTime = seek.value; });
 audioEl.addEventListener('ended', ()=>{ playing=false; updatePlayBtn(); nextBtn.click(); });
-
-audioUpload.addEventListener('change', (e)=>{
-  const files = Array.from(e.target.files);
-  files.forEach(f=>{
-    const url = URL.createObjectURL(f);
-    addTrack({title:f.name, src:url});
-  });
-  audioUpload.value='';
-});
-
-clearPlaylist.addEventListener('click', ()=>{ playlist = []; playlistEl.innerHTML=''; audioEl.pause(); audioEl.src=''; playing=false; updatePlayBtn(); });
 
 function formatTime(t){ if(!t || isNaN(t)) return '00:00'; const m = Math.floor(t/60); const s = Math.floor(t%60); return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
 
@@ -103,8 +98,17 @@ function hitungRamalan(){ const n1 = el('nama').value.trim() || 'Anda'; const d1
   el('detail').innerHTML = renderDetail(w1,w2);
   el('result').hidden = false; updateShareLinkForPair(n1,d1,n2,d2); simpanRiwayat(n1+' & '+n2, `${d1} + ${d2}`, {w1,w2}); window.location.hash='#result'; }
 
-// ---------------- Tabel 35 weton ----------------
-function buildWetonTable(){ const tbody = document.querySelector('#wetonTable tbody'); tbody.innerHTML=''; for(let hi=0; hi<7; hi++){ for(let pi=0; pi<5; pi++){ const hari=HARI[hi]; const pas=PASARAN[pi]; const neptu=HARI_NEPTU[hari]+PASARAN_NEPTU[pas]; const tr=document.createElement('tr'); tr.innerHTML=`<td>${hari}</td><td>${pas}</td><td>${neptu}</td>`; tr.addEventListener('click', ()=>{ el('summary').innerHTML = `<strong>${hari} ${pas}</strong><br><em>Neptu: ${neptu}</em>`; el('detail').innerHTML = `<p>${escapeHtml(tafsirByTotalNeptu(neptu))}</p>`; el('result').hidden=false; window.location.hash='#result'; }); tbody.appendChild(tr); } } }
+// ---------------- Manual weton dropdown (sidebar) ----------------
+function calcManualNeptu(){
+  const hari = el('hariSelect').value;
+  const pas = el('pasaranSelect').value;
+  if(!hari || !pas){ el('manualResult').textContent = 'Silakan pilih hari dan pasaran.'; return; }
+  const neptu = HARI_NEPTU[hari] + PASARAN_NEPTU[pas];
+  el('manualResult').innerHTML = `<strong>${hari} ${pas}</strong><br>Neptu: ${neptu}`;
+}
+
+// ---------------- Tabel 35 weton (ke-klik) kept for backward compatibility but hidden if dropdown used ----------------
+function buildWetonTable(){ const tbody = document.querySelector('#wetonTable tbody'); if(!tbody) return; tbody.innerHTML=''; for(let hi=0; hi<7; hi++){ for(let pi=0; pi<5; pi++){ const hari=HARI[hi]; const pas=PASARAN[pi]; const neptu=HARI_NEPTU[hari]+PASARAN_NEPTU[pas]; const tr=document.createElement('tr'); tr.innerHTML=`<td>${hari}</td><td>${pas}</td><td>${neptu}</td>`; tr.addEventListener('click', ()=>{ el('summary').innerHTML = `<strong>${hari} ${pas}</strong><br><em>Neptu: ${neptu}</em>`; el('detail').innerHTML = `<p>${escapeHtml(tafsirByTotalNeptu(neptu))}</p>`; el('result').hidden=false; window.location.hash='#result'; }); tbody.appendChild(tr); } } }
 
 // ---------------- Riwayat ----------------
 function simpanRiwayat(nama,tanggal,hasil){ let riwayat = JSON.parse(localStorage.getItem('wetonHistory')||'[]'); riwayat.unshift({nama,tanggal,hasil,ts:Date.now()}); localStorage.setItem('wetonHistory',JSON.stringify(riwayat.slice(0,30))); tampilkanRiwayat(); }
@@ -118,6 +122,7 @@ toggleThemeBtn.addEventListener('click', ()=> setThemeDark(document.documentElem
 // ---------------- Load from URL & Init ----------------
 function loadFromURL(){ const p = new URLSearchParams(window.location.search); const n1 = p.get('n1'), d1 = p.get('d1'), n2 = p.get('n2'), d2 = p.get('d2'); if(n1) el('nama').value = n1; if(d1) el('tanggal').value = d1; if(n2) el('nama2').value = n2; if(d2) el('tanggal2').value = d2; if(d1 && d2) setTimeout(()=> hitungRamalan(), 250); }
 el('copyLinkBtn').addEventListener('click', ()=>{ const inp = el('share-link'); if(!inp.value) return alert('Belum ada link'); inp.select(); document.execCommand('copy'); alert('Link disalin'); });
+
 // --- Add missing events ---
 document.getElementById("calcBtn").addEventListener("click", hitungRamalan);
 document.getElementById("resetBtn").addEventListener("click", () => {
@@ -128,5 +133,7 @@ document.getElementById("resetBtn").addEventListener("click", () => {
   el('result').hidden = true;
 });
 
-window.addEventListener('load', ()=>{ buildWetonTable(); tampilkanRiwayat(); loadFromURL(); loadAssetsAudio(); });
+// manual calc button
+document.getElementById("calcManualBtn").addEventListener("click", calcManualNeptu);
 
+window.addEventListener('load', ()=>{ renderPlaylist(); buildWetonTable(); tampilkanRiwayat(); loadFromURL(); /* loadAssetsAudio removed */ });
