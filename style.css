@@ -6,7 +6,11 @@
 html,body{height:100%;margin:0;font-family:Georgia, 'Segoe UI', Tahoma, sans-serif;background:var(--bg);color:var(--text)}
 .site-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:linear-gradient(90deg,var(--accent),#4a2b12);color:var(--card)}
 .brand{display:flex;align-items:center;gap:12px}
-.logo{width:180px;height:44px}
+.logo-img {
+  height: 54px;
+  width: auto;
+  object-fit: contain;
+}
 .tag{font-size:13px;color:rgba(255,255,255,0.95);font-style:italic}
 .header-actions{display:flex;align-items:center;gap:10px}
 .header-actions button{background:transparent;border:1px solid rgba(255,255,255,0.12);color:var(--card);padding:8px 10px;border-radius:8px;cursor:pointer}
@@ -50,3 +54,4 @@ footer.copyright{text-align:center;margin-top:12px;color:var(--muted);font-size:
 /* small animation */
 .card{transition:transform .18s ease, box-shadow .18s ease}
 .card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,0.08)}
+
