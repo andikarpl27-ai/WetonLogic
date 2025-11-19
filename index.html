@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>WetonLogic — Premium</title>
+  <title>WetonLogic</title>
   <link rel="icon" href="Blangkon.png" type="image/x-icon">
   <link rel="stylesheet" href="style.css">
   <!-- FontAwesome CDN (ikon) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
 <body>
   <header class="site-header">
     <div class="brand">
-  <img src="wetonlogic.png" class="logo-img" alt="WetonLogic Logo">
-  <div class="tag">Ramalan Jodoh — Primbon Jawa Digital</div>
-</div>
-
+      <!-- Ganti teks SVG jadi logo gambar -->
+      <img src="wetonlogic.png" class="logo-img" alt="WetonLogic Logo" onerror="this.style.display='none'">
+      <div class="tag">Ramalan Jodoh — Primbon Jawa Digital</div>
+    </div>
 
     <div class="header-actions">
       <div class="theme-toggle">
@@ -46,26 +46,39 @@
           <div class="time"><span id="curTime">00:00</span> / <span id="durTime">00:00</span></div>
         </div>
 
-        <div class="player-actions">
-          <label class="upload-btn">
-            <i class="fas fa-upload"></i> Upload
-            <input type="file" id="audioUpload" accept="audio/*" multiple>
-          </label>
-          <button id="clearPlaylist" title="Hapus playlist"><i class="fas fa-trash-alt"></i></button>
-        </div>
-
-        <small class="muted">Tips: taruh file audio ke <code>assets/audio/</code> dan buat <code>manifest.json</code> untuk auto-load.</small>
+        <!-- Upload/hapus dihapus sesuai permintaan -->
+        <small class="muted">Gending bawaan berada di folder <code>assets/gending jawa/</code> (IrengIreng, kedanan, KecikKecik, ngamen4, PendekarRakyat).</small>
       </div>
 
+      <!-- Tabel weton diganti dropdown -->
       <div class="weton-table card">
-        <h4><i class="fas fa-table"></i> Tabel Weton</h4>
+        <h4><i class="fas fa-table"></i> Weton Manual</h4>
         <div class="table-wrap">
-          <table id="wetonTable" class="weton-table">
-            <thead>
-              <tr><th>Hari</th><th>Pasaran</th><th>Neptu</th></tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+          <label for="hariSelect">Pilih Hari</label>
+          <select id="hariSelect">
+            <option value="">-- Pilih Hari --</option>
+            <option value="Minggu">Minggu</option>
+            <option value="Senin">Senin</option>
+            <option value="Selasa">Selasa</option>
+            <option value="Rabu">Rabu</option>
+            <option value="Kamis">Kamis</option>
+            <option value="Jumat">Jumat</option>
+            <option value="Sabtu">Sabtu</option>
+          </select>
+
+          <label for="pasaranSelect">Pilih Pasaran</label>
+          <select id="pasaranSelect">
+            <option value="">-- Pilih Pasaran --</option>
+            <option value="Legi">Legi</option>
+            <option value="Pahing">Pahing</option>
+            <option value="Pon">Pon</option>
+            <option value="Wage">Wage</option>
+            <option value="Kliwon">Kliwon</option>
+          </select>
+
+          <button id="calcManualBtn" class="primary">Hitung Neptu</button>
+
+          <div id="manualResult" style="margin-top:10px;color:var(--muted)"></div>
         </div>
       </div>
     </nav>
@@ -125,6 +138,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
-
-
