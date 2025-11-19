@@ -118,5 +118,15 @@ toggleThemeBtn.addEventListener('click', ()=> setThemeDark(document.documentElem
 // ---------------- Load from URL & Init ----------------
 function loadFromURL(){ const p = new URLSearchParams(window.location.search); const n1 = p.get('n1'), d1 = p.get('d1'), n2 = p.get('n2'), d2 = p.get('d2'); if(n1) el('nama').value = n1; if(d1) el('tanggal').value = d1; if(n2) el('nama2').value = n2; if(d2) el('tanggal2').value = d2; if(d1 && d2) setTimeout(()=> hitungRamalan(), 250); }
 el('copyLinkBtn').addEventListener('click', ()=>{ const inp = el('share-link'); if(!inp.value) return alert('Belum ada link'); inp.select(); document.execCommand('copy'); alert('Link disalin'); });
+// --- Add missing events ---
+document.getElementById("calcBtn").addEventListener("click", hitungRamalan);
+document.getElementById("resetBtn").addEventListener("click", () => {
+  el('nama').value = "";
+  el('tanggal').value = "";
+  el('nama2').value = "";
+  el('tanggal2').value = "";
+  el('result').hidden = true;
+});
 
 window.addEventListener('load', ()=>{ buildWetonTable(); tampilkanRiwayat(); loadFromURL(); loadAssetsAudio(); });
+
