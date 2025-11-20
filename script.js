@@ -134,9 +134,21 @@ document.getElementById("resetBtn").addEventListener("click", () => {
   el('result').hidden = true;
 });
 
+document.getElementById("resetBtn").addEventListener("click", () => {
+  el('nama').value = "";
+  el('tanggal').value = "";
+  el('nama2').value = "";
+  el('tanggal2').value = "";
+  el('share-link').value = "";   
+  el('result').hidden = true;
+  window.history.replaceState({}, document.title, window.location.pathname); 
+});
+
+
 // manual calc button
 document.getElementById("calcManualBtn").addEventListener("click", calcManualNeptu);
 
 window.addEventListener('load', ()=>{ renderPlaylist(); buildWetonTable(); tampilkanRiwayat(); loadFromURL(); /* loadAssetsAudio removed */ });
+
 
 
