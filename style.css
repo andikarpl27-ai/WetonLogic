@@ -68,6 +68,80 @@ footer.copyright{text-align:center;margin-top:12px;color:var(--muted);font-size:
   cursor:pointer;
 }
 
+/* ========== RESPONSIVE MOBILE FIX ========== */
+@media (max-width: 600px) {
+
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    width: 100%;
+    padding: 15px;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  label {
+    font-size: 14px;
+  }
+
+  input, select {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  /* Layout input pasangan menjadi vertikal */
+  .flex-row {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  /* Tabel weton bisa di-scroll */
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 600px; /* ukuran asli tetap */
+    font-size: 14px;
+  }
+
+  /* Audio Player responsif */
+  .audio-player {
+    width: 100%;
+  }
+
+  .audio-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #seek {
+    width: 100%;
+  }
+
+  /* Summary dan Detail rapi di HP */
+  #summary, #detail {
+    font-size: 14px;
+  }
+
+  /* Riwayat responsif */
+  .riwayat-item {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  /* Tombol responsif */
+  button {
+    width: 100%;
+    padding: 12px;
+  }
+}
 
 /* manual/weton controls */
 .weton-table .pls-label{font-weight:700;margin-bottom:8px}
@@ -84,5 +158,6 @@ footer.copyright{text-align:center;margin-top:12px;color:var(--muted);font-size:
 /* small animation */
 .card{transition:transform .18s ease, box-shadow .18s ease}
 .card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(0,0,0,0.08)}
+
 
 
