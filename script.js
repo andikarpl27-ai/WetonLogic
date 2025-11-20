@@ -103,9 +103,23 @@ function hitungRamalan(){ const n1 = el('nama').value.trim() || 'Anda'; const d1
 function calcManualNeptu(){
   const hari = el('hariSelect').value;
   const pas = el('pasaranSelect').value;
-  if(!hari || !pas){ el('manualResult').textContent = 'Silakan pilih hari dan pasaran.'; return; }
-  const neptu = HARI_NEPTU[hari] + PASARAN_NEPTU[pas];
-  el('manualResult').innerHTML = `<strong>${hari} ${pas}</strong><br>Neptu: ${neptu}`;
+
+  if(!hari || !pas){
+    el('manualResult').innerHTML = '<span style="color:red">Silakan pilih hari dan pasaran.</span>';
+    return;
+  }
+
+  const neptuHari = HARI_NEPTU[hari];
+  const neptuPasaran = PASARAN_NEPTU[pas];
+  const total = neptuHari + neptuPasaran;
+
+  el('manualResult').innerHTML = `
+    <div style="line-height:1.6">
+      <strong>Hari:</strong> ${hari} <em>(Neptu ${neptuHari})</em><br>
+      <strong>Pasaran:</strong> ${pas} <em>(Neptu ${neptuPasaran})</em><br>
+      <strong>Total Neptu:</strong> ${total}
+    </div>
+  `;
 }
 
 // ---------------- Tabel 35 weton (ke-klik) kept for backward compatibility but hidden if dropdown used ----------------
@@ -226,6 +240,7 @@ document.getElementById("resetBtn").addEventListener("click", () => {
 document.getElementById("calcManualBtn").addEventListener("click", calcManualNeptu);
 
 window.addEventListener('load', ()=>{ renderPlaylist(); buildWetonTable(); tampilkanRiwayat(); loadFromURL(); /* loadAssetsAudio removed */ });
+
 
 
 
