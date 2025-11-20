@@ -2,7 +2,7 @@
 # 🌙✨ **Website Perhitungan Weton Jawa**
 
 <p align="center">
-  <img src="https://i.ibb.co/6rN6F2w/weton-banner.png" width="680"/>
+  <img src="wetonlogic.png" width="680"/>
 </p>
 
 ---
