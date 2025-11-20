@@ -25,11 +25,11 @@ const durTime = document.getElementById('durTime');
 const playlistEl = document.getElementById('playlist');
 
 let defaultTracks = [
-  { title: 'IrengIreng', src: 'gending-jawa/IrengIreng.mp3' },
-  { title: 'kedanan', src: 'gending-jawa/kedanan.mp3' },
-  { title: 'KecikKecik', src: 'gending-jawa/KecikKecik.mp3' },
-  { title: 'ngamen4', src: 'gending-jawa/ngamen4.mp3' },
-  { title: 'PendekarRakyat', src: 'gending-jawa/PendekarRakyat.mp3' }
+  { title: 'IrengIreng', src: 'assets/gending/IrengIreng.mp3' },
+  { title: 'kedanan', src: 'assets/gending/kedanan.mp3' },
+  { title: 'KecikKecik', src: 'assets/gending/KecikKecik.mp3' },
+  { title: 'ngamen4', src: 'assets/gending/ngamen4.mp3' },
+  { title: 'PendekarRakyat', src: 'assets/gending/PendekarRakyat.mp3' }
 ];
 
 let current = 0;
@@ -73,6 +73,7 @@ nextBtn.addEventListener('click', ()=>{ loadTrack((current+1)%defaultTracks.leng
 audioEl.addEventListener('timeupdate', ()=>{
   seek.max = audioEl.duration || 0; seek.value = audioEl.currentTime || 0; curTime.textContent = formatTime(audioEl.currentTime||0); durTime.textContent = formatTime(audioEl.duration||0);
 });
+audioEl.volume = 1.0;
 seek.addEventListener('input', ()=>{ audioEl.currentTime = seek.value; });
 audioEl.addEventListener('ended', ()=>{ playing=false; updatePlayBtn(); nextBtn.click(); });
 
@@ -137,4 +138,5 @@ document.getElementById("resetBtn").addEventListener("click", () => {
 document.getElementById("calcManualBtn").addEventListener("click", calcManualNeptu);
 
 window.addEventListener('load', ()=>{ renderPlaylist(); buildWetonTable(); tampilkanRiwayat(); loadFromURL(); /* loadAssetsAudio removed */ });
+
 
