@@ -101,11 +101,27 @@ Ini memastikan hasil **selalu identik dengan primbon online.**
 # 🧩 **Struktur Proyek**
 
 ```
-/
+WetonLogic/
+│
 ├── index.html
-├── style.css
 ├── script.js
-└── README.md
+├── style.css
+├── README.md
+├── Blangkon.png
+├── wetonlogic.png
+├── WEB.png
+│
+├── assets/
+│   ├── gending/          ← folder berisi semua mp3 gending
+│   │     ├── IrengIreng.mp3
+│   │     ├── kedanan.mp3
+│   │     ├── KecikKecik.mp3
+│   │     ├── ngamen4.mp3
+│   │     └── PendekarRakyat.mp3
+│  
+└── image/  ← folder opsional untuk gambar lain (kosong)
+        
+
 ```
 
 ---
