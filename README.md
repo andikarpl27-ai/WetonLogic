@@ -41,18 +41,6 @@ Disimpan ke localStorage, tampil rapi di UI.
 
 Jika diinginkan: tabel pancawara + dinapitu lengkap.
 
-### 🌇 5. Gambar Ilustrasi (Banner, Diagram Weton)
-
-Dibuat khusus agar README Anda terlihat profesional.
-
----
-
-# 🌟 **Preview Diagram Weton**
-
-<p align="center">
-  <img src="https://i.ibb.co/vxY2x3F/diagram-weton.png" width="500"/>
-</p>
-
 ---
 
 # 🧠 **Dasar Perhitungan Weton Jawa**
@@ -124,10 +112,10 @@ Ini memastikan hasil **selalu identik dengan primbon online.**
 
 # 💻 **Cara Menjalankan**
 
-1. Clone repo:
+1. Url Web:
 
    ```
-   git clone https://github.com/username/weton-jawa
+   (https://andikarpl27-ai.github.io/WetonLogic/)
    ```
 2. Buka `index.html`
 3. Masukkan nama & tanggal lahir
