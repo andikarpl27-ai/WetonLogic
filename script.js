@@ -112,8 +112,85 @@ function calcManualNeptu(){
 function buildWetonTable(){ const tbody = document.querySelector('#wetonTable tbody'); if(!tbody) return; tbody.innerHTML=''; for(let hi=0; hi<7; hi++){ for(let pi=0; pi<5; pi++){ const hari=HARI[hi]; const pas=PASARAN[pi]; const neptu=HARI_NEPTU[hari]+PASARAN_NEPTU[pas]; const tr=document.createElement('tr'); tr.innerHTML=`<td>${hari}</td><td>${pas}</td><td>${neptu}</td>`; tr.addEventListener('click', ()=>{ el('summary').innerHTML = `<strong>${hari} ${pas}</strong><br><em>Neptu: ${neptu}</em>`; el('detail').innerHTML = `<p>${escapeHtml(tafsirByTotalNeptu(neptu))}</p>`; el('result').hidden=false; window.location.hash='#result'; }); tbody.appendChild(tr); } } }
 
 // ---------------- Riwayat ----------------
-function simpanRiwayat(nama,tanggal,hasil){ let riwayat = JSON.parse(localStorage.getItem('wetonHistory')||'[]'); riwayat.unshift({nama,tanggal,hasil,ts:Date.now()}); localStorage.setItem('wetonHistory',JSON.stringify(riwayat.slice(0,30))); tampilkanRiwayat(); }
-function tampilkanRiwayat(){ const c = el('riwayat-list'); const r = JSON.parse(localStorage.getItem('wetonHistory')||'[]'); c.innerHTML=''; r.slice(0,10).forEach(it=>{ const d = document.createElement('div'); d.className='riwayat-item'; d.innerHTML=`<strong>${escapeHtml(it.nama)}</strong><div style="font-size:13px;color:var(--muted)">${escapeHtml(it.tanggal)}</div>`; c.appendChild(d); }); }
+function simpanRiwayat(nama, tanggal, hasil){
+  let riwayat = JSON.parse(localStorage.getItem('wetonHistory') || '[]');
+
+  riwayat.unshift({
+    nama,
+    tanggal,
+    hasil,
+    ts: Date.now()
+  });
+
+  localStorage.setItem('wetonHistory', JSON.stringify(riwayat.slice(0, 50)));
+  tampilkanRiwayat();
+}
+
+function tampilkanRiwayat(){
+  const c = el('riwayat-list');
+  const r = JSON.parse(localStorage.getItem('wetonHistory') || '[]');
+
+  c.innerHTML = "";
+
+  r.forEach((it, idx) => {
+    const row = document.createElement("div");
+    row.className = "riwayat-item";
+
+    row.innerHTML = `
+      <div class="riwayat-main">
+        <strong>${escapeHtml(it.nama)}</strong>
+        <div class="small muted">${escapeHtml(it.tanggal)}</div>
+      </div>
+      <button class="riwayat-open" data-i="${idx}" title="Lihat kembali">
+        <i class="fas fa-eye"></i>
+      </button>
+    `;
+
+    row.querySelector(".riwayat-open").addEventListener("click", () => {
+      bukaRiwayat(idx);
+    });
+
+    c.appendChild(row);
+  });
+
+  // Tambahkan tombol hapus total
+  const clearBtn = document.createElement("button");
+  clearBtn.className = "clear-history-btn";
+  clearBtn.innerHTML = `<i class="fas fa-trash"></i> Hapus Riwayat`;
+
+  clearBtn.addEventListener("click", hapusRiwayatDenganValidasi);
+  c.appendChild(clearBtn);
+}
+function bukaRiwayat(i){
+  const r = JSON.parse(localStorage.getItem('wetonHistory') || '[]');
+  const item = r[i];
+  if(!item) return;
+
+  const { w1, w2 } = item.hasil;
+
+  // Tampilkan ulang hasil
+  el("summary").innerHTML = renderSummary(
+    item.nama.split("&")[0].trim(),
+    item.tanggal.split("+")[0].trim(),
+    item.nama.split("&")[1]?.trim() || "Pasangan",
+    item.tanggal.split("+")[1]?.trim() || "",
+    w1,
+    w2
+  );
+
+  el("detail").innerHTML = renderDetail(w1, w2);
+  el("result").hidden = false;
+
+  window.location.hash = "#result";
+}
+function hapusRiwayatDenganValidasi(){
+  if(!confirm("Yakin ingin menghapus semua riwayat? Tindakan ini tidak dapat dibatalkan.")){
+    return;
+  }
+
+  localStorage.removeItem("wetonHistory");
+  tampilkanRiwayat();
+}
 
 // ---------------- Theme ----------------
 const toggleThemeBtn = document.getElementById('toggleTheme'); function setThemeDark(v){ if(v){ document.documentElement.setAttribute('data-theme','dark'); toggleThemeBtn.innerHTML = '<i class="fas fa-sun"></i> Light'; localStorage.setItem('wl_theme','dark'); } else { document.documentElement.removeAttribute('data-theme'); toggleThemeBtn.innerHTML = '<i class="fas fa-moon"></i> Dark'; localStorage.removeItem('wl_theme'); } }
@@ -149,6 +226,7 @@ document.getElementById("resetBtn").addEventListener("click", () => {
 document.getElementById("calcManualBtn").addEventListener("click", calcManualNeptu);
 
 window.addEventListener('load', ()=>{ renderPlaylist(); buildWetonTable(); tampilkanRiwayat(); loadFromURL(); /* loadAssetsAudio removed */ });
+
 
 
 
