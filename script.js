@@ -28,7 +28,7 @@ let defaultTracks = [
   { title: 'IrengIreng', src: 'assets/gending/IrengIreng.mp3' },
   { title: 'kedanan', src: 'assets/gending/kedanan.mp3' },
   { title: 'KecikKecik', src: 'assets/gending/KecikKecik.mp3' },
-  { title: 'ngamen4', src: 'assets/gending/ngamen4.mp3' },
+  { title: 'ngamen4', src: 'assets/gending/Ngamen4.mp3' },
   { title: 'PendekarRakyat', src: 'assets/gending/PendekarRakyat.mp3' }
 ];
 
@@ -149,6 +149,7 @@ document.getElementById("resetBtn").addEventListener("click", () => {
 document.getElementById("calcManualBtn").addEventListener("click", calcManualNeptu);
 
 window.addEventListener('load', ()=>{ renderPlaylist(); buildWetonTable(); tampilkanRiwayat(); loadFromURL(); /* loadAssetsAudio removed */ });
+
 
 
 
